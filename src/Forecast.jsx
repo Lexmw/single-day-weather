@@ -54,11 +54,11 @@ export default function Forecast({ city }) {
             minWidth: '150px',
             backgroundColor: '#f5f5f5',
           }}>
-            <p><strong>{new Date(item.dt_txt).toLocaleDateString('en-US', {
-              weekday: 'short',
-              month: 'short',
-              day: 'numeric',
-            })}</strong></p>
+          <p><strong>{new Date(item.dt_txt).toLocaleDateString('en-US', {
+          weekday: 'short',
+          month: 'short',
+          day: 'numeric'
+          })}</strong></p>
             <p>Temp: {item.main.temp} °F</p>
             <p>{item.weather[0].description}</p>
             <img
@@ -71,3 +71,4 @@ export default function Forecast({ city }) {
     </div>
   );
 }
+
