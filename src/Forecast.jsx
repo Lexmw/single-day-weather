@@ -19,8 +19,18 @@ export default function Forecast({ city }) {
         return res.json();
       })
       .then((data) => {
-        // Every 8th entry = next day at same time
-        const dailyForecasts = data.list.filter((_, index) => index % 8 === 0);
+        // Get one forecast per day
+        const dailyForecasts = [];
+        const usedDates = new Set();
+
+        for (let item of data.list) {
+          const date = item.dt_txt.split(' ')[0]; // 'YYYY-MM-DD'
+          if (!usedDates.has(date)) {
+            dailyForecasts.push(item);
+            usedDates.add(date);
+          }
+        }
+
         setForecastData(dailyForecasts);
         setLoading(false);
       })
@@ -42,9 +52,13 @@ export default function Forecast({ city }) {
             padding: '1rem',
             borderRadius: '8px',
             minWidth: '150px',
-            backgroundColor: '#f5f5f5'
+            backgroundColor: '#f5f5f5',
           }}>
-            <p><strong>{new Date(item.dt_txt).toLocaleDateString()}</strong></p>
+            <p><strong>{new Date(item.dt_txt).toLocaleDateString('en-US', {
+              weekday: 'short',
+              month: 'short',
+              day: 'numeric',
+            })}</strong></p>
             <p>Temp: {item.main.temp} °F</p>
             <p>{item.weather[0].description}</p>
             <img
